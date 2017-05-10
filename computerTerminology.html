@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Metaphor</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="terminology.js"></script>
+    <script>
+    var currentTerm = 0;
+    var lastTerm;
+        
+    window.onload=function()
+    {
+        lastTerm = vocab.length;
+        document.getElementById('term').innerHTML = "<h1>" + vocab[currentTerm] + "</h1>";
+        
+        //Make it tappable
+        var myHammer = new Hammer(document.getElementById('term'));
+        myHammer.on("tap", function(ev){
+           document.getElementById('definition').innerHTML = definitions[currentTerm]; 
+        });
+        
+        var termHammer = new Hammer(document.getElementById('display'));
+        termHammer.on("swipeleft swiperight", nextTerm);
+    }
+    
+    function displayTerm()
+    {
+        document.getElementById('term').innerHTML = "<h1>" + vocab[currentTerm] + "</h1>";
+        document.getElementById('definition').innerHTML = "";
+        
+    }
+    
+    function nextTerm(evt)
+    {
+        if(evt.type=="swipeleft"){
+            currentTerm++;
+        } else
+        {
+            currentTerm--;
+        }
+        
+        if(currentTerm == (lastTerm-1)){
+            currentTerm = 0;
+        }
+        
+        if(currentTerm < 0){
+            currentTerm = lastTerm-1;
+        }
+        console.log(currentTerm);
+        displayTerm();
+    }
+    
+    </script>
+    <style>
+        #footer
+        {
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div data-role="page">
+  <div data-role="header">
+    <h1>Vocab for Coders</h1>
+  </div>  <!-- header -->
+  <div data-role="main" id="main" class="ui-content">
+    <div id="display">
+        <div id="term"></div>
+        <div id="definition"></div>
+    </div>      
+  </div>  <!-- main -->
+  <div data-role="footer" id="footer">
+    <h1>Learning Solutions</h1>
+  </div>  <!-- footer -->
+</div>   <!-- page -->
+</body>    
+</html>
